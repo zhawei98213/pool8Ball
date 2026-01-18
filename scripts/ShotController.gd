@@ -2,6 +2,7 @@ extends Node
 
 @export var cue_ball_path: NodePath
 @export var camera_rig_path: NodePath
+@export var aim_assist_path: NodePath
 @export var table_height := 0.0
 @export var ball_radius := 0.028575
 @export var max_shot_power := 12.0
@@ -9,11 +10,13 @@ extends Node
 var _cue_ball: RigidBody3D
 var _camera_rig: Node3D
 var _camera: Camera3D
+var _aim_assist: Node
 
 var _placement_mode := false
 var _selected_ball: RigidBody3D = null
 var _aiming := false
 var _aim_start := Vector2.ZERO
+var _last_aim_direction := Vector3.ZERO
 
 var _default_positions: Dictionary = {}
 
@@ -21,12 +24,14 @@ func _ready() -> void:
 	_cue_ball = get_node(cue_ball_path)
 	_camera_rig = get_node(camera_rig_path)
 	_camera = _camera_rig.get_camera()
+	_aim_assist = get_node_or_null(aim_assist_path)
 	_cache_default_positions()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("place_mode"):
 		_placement_mode = !_placement_mode
 		_release_selected_ball()
+		_update_aim_assist(false)
 	if event.is_action_pressed("reset_balls"):
 		_reset_balls()
 
@@ -38,8 +43,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				_on_left_release(event.position)
 		if event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed:
 			_release_selected_ball()
+	elif event is InputEventMouseMotion:
+		if not _placement_mode:
+			_update_aim_from_screen(event.position)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if _placement_mode and _selected_ball:
 		var hit_pos: Variant = _raycast_table(get_viewport().get_mouse_position())
 		if hit_pos != null:
@@ -53,6 +61,7 @@ func _on_left_press(screen_pos: Vector2) -> void:
 		return
 	_aiming = true
 	_aim_start = screen_pos
+	_update_aim_from_screen(screen_pos)
 
 func _on_left_release(screen_pos: Vector2) -> void:
 	if _placement_mode:
@@ -63,15 +72,36 @@ func _on_left_release(screen_pos: Vector2) -> void:
 	_aiming = false
 	var hit_pos: Variant = _raycast_table(screen_pos)
 	if hit_pos == null:
+		_update_aim_assist(false)
 		return
 	var direction: Vector3 = (hit_pos - _cue_ball.global_transform.origin)
 	direction.y = 0.0
 	if direction.length() < 0.01:
+		_update_aim_assist(false)
 		return
 	var drag_len: float = _aim_start.distance_to(screen_pos)
 	var power: float = clamp(drag_len / 300.0, 0.1, 1.0) * max_shot_power
 	direction = direction.normalized()
+	_last_aim_direction = direction
+	_update_aim_assist(true)
 	_cue_ball.apply_impulse(direction * power)
+
+func _update_aim_from_screen(screen_pos: Vector2) -> void:
+	var hit_pos: Variant = _raycast_table(screen_pos)
+	if hit_pos == null:
+		_update_aim_assist(false)
+		return
+	var direction: Vector3 = (hit_pos - _cue_ball.global_transform.origin)
+	direction.y = 0.0
+	if direction.length() < 0.001:
+		_update_aim_assist(false)
+		return
+	_last_aim_direction = direction.normalized()
+	_update_aim_assist(true)
+
+func _update_aim_assist(active: bool) -> void:
+	if _aim_assist and _aim_assist.has_method("update_aim"):
+		_aim_assist.update_aim(_last_aim_direction, active)
 
 func _select_ball(screen_pos: Vector2) -> void:
 	var hit: Dictionary = _raycast_objects(screen_pos)

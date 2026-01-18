@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/CameraOrbit.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/ShotController.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/AimAssist.gd" id="3"]
 
 [sub_resource type="PhysicsMaterial" id="1"]
 friction = 0.2
@@ -32,6 +33,10 @@ albedo_color = Color(0.92, 0.92, 0.92)
 
 [sub_resource type="StandardMaterial3D" id="9"]
 albedo_color = Color(0.9, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="10"]
+transparency = 1
+albedo_color = Color(0.6, 0.9, 1.0, 0.35)
 
 [node name="Main" type="Node3D"]
 
@@ -81,7 +86,22 @@ material_override = SubResource("9")
 [node name="TargetBallCollision" type="CollisionShape3D" parent="TargetBall"]
 shape = SubResource("7")
 
+[node name="AimAssist" type="Node3D" parent="."]
+script = ExtResource("3")
+cue_ball_path = NodePath("../CueBall")
+
+[node name="CueLine" type="Line3D" parent="AimAssist"]
+width = 0.01
+
+[node name="TargetLine" type="Line3D" parent="AimAssist"]
+width = 0.01
+
+[node name="GhostBall" type="MeshInstance3D" parent="AimAssist"]
+mesh = SubResource("6")
+material_override = SubResource("10")
+
 [node name="ShotController" type="Node" parent="."]
 script = ExtResource("2")
 cue_ball_path = NodePath("../CueBall")
 camera_rig_path = NodePath("../CameraRig")
+aim_assist_path = NodePath("../AimAssist")
