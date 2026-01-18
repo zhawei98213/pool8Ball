@@ -39,7 +39,7 @@ func _update_camera_transform() -> void:
 	cam_basis = cam_basis.rotated(Vector3.RIGHT, _pitch)
 	var offset := cam_basis * Vector3(0.0, 0.0, distance)
 	_camera.global_transform.origin = global_transform.origin + offset
-	_camera.look_at(global_transform.origin, Vector3.UP)
+	_camera.look_at(global_transform.origin + Vector3(0.0, 0.03, 0.0), Vector3.UP)
 
 func get_camera() -> Camera3D:
 	return _camera
