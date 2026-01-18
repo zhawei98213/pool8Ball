@@ -53,8 +53,10 @@ func _find_target_ball(cue_pos: Vector3, aim_dir: Vector3) -> RigidBody3D:
 	query.collision_mask = 1
 	query.exclude = [_cue_ball.get_rid()]
 	var hit := space.intersect_ray(query)
-	if not hit:\n\t\treturn null
-	if hit.collider is RigidBody3D:\n\t\treturn hit.collider
+	if not hit:
+		return null
+	if hit.collider is RigidBody3D:
+		return hit.collider
 	return null
 
 func _find_best_pocket(target_pos: Vector3, aim_dir: Vector3) -> Vector3:
