@@ -38,10 +38,10 @@ func update_aim(direction: Vector3, aiming: bool) -> void:
 	var pocket_pos: Vector3 = _find_best_pocket(target_pos, aim_dir)
 	_set_line(_target_line, target_pos, pocket_pos)
 
-func _set_visible(visible: bool) -> void:
-	_cue_line.visible = visible
-	_target_line.visible = visible
-	_ghost_ball.visible = visible
+func _set_visible(is_visible: bool) -> void:
+	_cue_line.visible = is_visible
+	_target_line.visible = is_visible
+	_ghost_ball.visible = is_visible
 
 func _find_target_ball(cue_pos: Vector3, aim_dir: Vector3) -> RigidBody3D:
 	var balls: Array = get_tree().get_nodes_in_group("balls")

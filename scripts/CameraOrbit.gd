@@ -34,10 +34,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_update_camera_transform()
 
 func _update_camera_transform() -> void:
-	var basis := Basis()
-	basis = basis.rotated(Vector3.UP, _yaw)
-	basis = basis.rotated(Vector3.RIGHT, _pitch)
-	var offset := basis * Vector3(0.0, 0.0, distance)
+	var cam_basis := Basis()
+	cam_basis = cam_basis.rotated(Vector3.UP, _yaw)
+	cam_basis = cam_basis.rotated(Vector3.RIGHT, _pitch)
+	var offset := cam_basis * Vector3(0.0, 0.0, distance)
 	_camera.global_transform.origin = global_transform.origin + offset
 	_camera.look_at(global_transform.origin, Vector3.UP)
 
