@@ -41,9 +41,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	if _placement_mode and _selected_ball:
-		var hit = _raycast_table(get_viewport().get_mouse_position())
-		if hit:
-			var target: Vector3 = hit["position"]
+		var hit_pos := _raycast_table(get_viewport().get_mouse_position())
+		if hit_pos != null:
+			var target: Vector3 = hit_pos
 			target.y = table_height + ball_radius
 			_selected_ball.global_transform.origin = target
 
@@ -61,10 +61,10 @@ func _on_left_release(screen_pos: Vector2) -> void:
 	if not _aiming:
 		return
 	_aiming = false
-	var hit = _raycast_table(screen_pos)
-	if not hit:
+	var hit_pos := _raycast_table(screen_pos)
+	if hit_pos == null:
 		return
-	var direction := (hit["position"] - _cue_ball.global_transform.origin)
+	var direction: Vector3 = (hit_pos - _cue_ball.global_transform.origin)
 	direction.y = 0.0
 	if direction.length() < 0.01:
 		return
@@ -84,14 +84,12 @@ func _release_selected_ball() -> void:
 		_selected_ball.freeze = false
 		_selected_ball = null
 
-func _raycast_table(screen_pos: Vector2) -> Dictionary:
+func _raycast_table(screen_pos: Vector2) -> Variant:
 	var origin := _camera.project_ray_origin(screen_pos)
 	var dir := _camera.project_ray_normal(screen_pos)
 	var plane := Plane(Vector3.UP, table_height)
 	var hit_pos := plane.intersects_ray(origin, dir)
-	if hit_pos == null:
-		return {}
-	return {"position": hit_pos}
+	return hit_pos
 
 func _raycast_objects(screen_pos: Vector2) -> Dictionary:
 	var origin := _camera.project_ray_origin(screen_pos)
