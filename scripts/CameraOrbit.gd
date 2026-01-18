@@ -1,15 +1,15 @@
 extends Node3D
 
-@export var distance := 2.2
-@export var min_distance := 1.2
-@export var max_distance := 4.5
+@export var distance := 3.6
+@export var min_distance := 1.5
+@export var max_distance := 6.5
 @export var yaw_speed := 0.01
 @export var pitch_speed := 0.01
 @export var min_pitch := deg_to_rad(-10.0)
 @export var max_pitch := deg_to_rad(60.0)
 
 var _yaw := 0.0
-var _pitch := deg_to_rad(25.0)
+var _pitch := deg_to_rad(40.0)
 var _orbiting := false
 
 @onready var _camera: Camera3D = $Camera3D

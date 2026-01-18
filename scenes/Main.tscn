@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/CameraOrbit.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/ShotController.gd" id="2"]
@@ -44,6 +44,13 @@ albedo_color = Color(0.95, 0.85, 0.2)
 transparency = 1
 albedo_color = Color(0.6, 0.9, 1.0, 0.35)
 
+[sub_resource type="StandardMaterial3D" id="14"]
+shading_mode = 2
+albedo_color = Color(1, 0, 0)
+
+[sub_resource type="BoxMesh" id="15"]
+size = Vector3(0.4, 0.4, 0.4)
+
 [sub_resource type="Environment" id="13"]
 background_mode = 1
 background_color = Color(0.08, 0.08, 0.1)
@@ -58,6 +65,11 @@ environment = SubResource("13")
 [node name="Sun" type="DirectionalLight3D" parent="."]
 light_energy = 2.0
 rotation = Vector3(-0.9, 0.6, 0.0)
+
+[node name="DebugCube" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.2, 0)
+mesh = SubResource("15")
+material_override = SubResource("14")
 
 [node name="CameraRig" type="Node3D" parent="."]
 position = Vector3(0, 0, 0)
