@@ -52,7 +52,7 @@ func get_camera() -> Camera3D:
 	return _camera
 
 func is_top_down() -> bool:
-\treturn _top_down
+	return _top_down
 
 func _toggle_view() -> void:
 	_top_down = !_top_down
