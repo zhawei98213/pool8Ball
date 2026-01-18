@@ -71,6 +71,15 @@ position = Vector3(0, 0.2, 0)
 mesh = SubResource("15")
 material_override = SubResource("14")
 
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="DebugHUD"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 310.0
+offset_bottom = 40.0
+text = "SCENE LOADED"
+
 [node name="CameraRig" type="Node3D" parent="."]
 position = Vector3(0, 0, 0)
 script = ExtResource("1")
