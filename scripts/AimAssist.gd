@@ -46,7 +46,7 @@ func _set_visible(show_lines: bool) -> void:
 func _find_target_ball(cue_pos: Vector3, aim_dir: Vector3) -> RigidBody3D:
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var origin := cue_pos + Vector3(0.0, ball_radius, 0.0)
-	var max_dist := max(table_width, table_length) * 2.0
+	var max_dist: float = max(table_width, table_length) * 2.0
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + aim_dir * max_dist)
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
