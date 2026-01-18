@@ -15,7 +15,7 @@ var _selected_ball: RigidBody3D = null
 var _aiming := false
 var _aim_start := Vector2.ZERO
 
-var _default_positions := {}
+var _default_positions: Dictionary = {}
 
 func _ready() -> void:
 	_cue_ball = get_node(cue_ball_path)
@@ -41,7 +41,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	if _placement_mode and _selected_ball:
-		var hit_pos := _raycast_table(get_viewport().get_mouse_position())
+		var hit_pos: Variant = _raycast_table(get_viewport().get_mouse_position())
 		if hit_pos != null:
 			var target: Vector3 = hit_pos
 			target.y = table_height + ball_radius
@@ -61,20 +61,20 @@ func _on_left_release(screen_pos: Vector2) -> void:
 	if not _aiming:
 		return
 	_aiming = false
-	var hit_pos := _raycast_table(screen_pos)
+	var hit_pos: Variant = _raycast_table(screen_pos)
 	if hit_pos == null:
 		return
 	var direction: Vector3 = (hit_pos - _cue_ball.global_transform.origin)
 	direction.y = 0.0
 	if direction.length() < 0.01:
 		return
-	var drag_len := _aim_start.distance_to(screen_pos)
-	var power := clamp(drag_len / 300.0, 0.1, 1.0) * max_shot_power
+	var drag_len: float = _aim_start.distance_to(screen_pos)
+	var power: float = clamp(drag_len / 300.0, 0.1, 1.0) * max_shot_power
 	direction = direction.normalized()
 	_cue_ball.apply_impulse(direction * power)
 
 func _select_ball(screen_pos: Vector2) -> void:
-	var hit = _raycast_objects(screen_pos)
+	var hit: Dictionary = _raycast_objects(screen_pos)
 	if hit and hit.collider is RigidBody3D:
 		_selected_ball = hit.collider
 		_selected_ball.freeze = true
@@ -88,13 +88,13 @@ func _raycast_table(screen_pos: Vector2) -> Variant:
 	var origin := _camera.project_ray_origin(screen_pos)
 	var dir := _camera.project_ray_normal(screen_pos)
 	var plane := Plane(Vector3.UP, table_height)
-	var hit_pos := plane.intersects_ray(origin, dir)
+	var hit_pos: Variant = plane.intersects_ray(origin, dir)
 	return hit_pos
 
 func _raycast_objects(screen_pos: Vector2) -> Dictionary:
 	var origin := _camera.project_ray_origin(screen_pos)
 	var dir := _camera.project_ray_normal(screen_pos)
-	var space := get_world_3d().direct_space_state
+	var space: PhysicsDirectSpaceState3D = _camera.get_world_3d().direct_space_state
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + dir * 10.0)
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
@@ -102,7 +102,7 @@ func _raycast_objects(screen_pos: Vector2) -> Dictionary:
 
 func _cache_default_positions() -> void:
 	_default_positions.clear()
-	var balls := get_tree().get_nodes_in_group("balls")
+	var balls: Array = get_tree().get_nodes_in_group("balls")
 	for ball in balls:
 		_default_positions[ball] = ball.global_transform.origin
 
