@@ -53,13 +53,12 @@ material_override = SubResource("5")
 [node name="TableCollision" type="CollisionShape3D" parent="Table"]
 shape = SubResource("4")
 
-[node name="CueBall" type="RigidBody3D" parent="."]
+[node name="CueBall" type="RigidBody3D" parent="." groups=["balls"]]
 position = Vector3(-0.6, 0.028575, 0)
 mass = 0.17
 linear_damp = 0.7
 angular_damp = 0.6
 physics_material_override = SubResource("2")
-groups = ["balls"]
 
 [node name="CueBallMesh" type="MeshInstance3D" parent="CueBall"]
 mesh = SubResource("6")
@@ -68,13 +67,12 @@ material_override = SubResource("8")
 [node name="CueBallCollision" type="CollisionShape3D" parent="CueBall"]
 shape = SubResource("7")
 
-[node name="TargetBall" type="RigidBody3D" parent="."]
+[node name="TargetBall" type="RigidBody3D" parent="." groups=["balls"]]
 position = Vector3(0.4, 0.028575, 0.1)
 mass = 0.17
 linear_damp = 0.7
 angular_damp = 0.6
 physics_material_override = SubResource("2")
-groups = ["balls"]
 
 [node name="TargetBallMesh" type="MeshInstance3D" parent="TargetBall"]
 mesh = SubResource("6")
