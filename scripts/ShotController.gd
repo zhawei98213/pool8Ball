@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	if _placement_mode and _selected_ball:
 		var hit = _raycast_table(get_viewport().get_mouse_position())
 		if hit:
-			var target := hit.position
+			var target: Vector3 = hit["position"]
 			target.y = table_height + ball_radius
 			_selected_ball.global_transform.origin = target
 
@@ -64,7 +64,7 @@ func _on_left_release(screen_pos: Vector2) -> void:
 	var hit = _raycast_table(screen_pos)
 	if not hit:
 		return
-	var direction := (hit.position - _cue_ball.global_transform.origin)
+	var direction := (hit["position"] - _cue_ball.global_transform.origin)
 	direction.y = 0.0
 	if direction.length() < 0.01:
 		return
