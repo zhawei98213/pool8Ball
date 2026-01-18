@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/CameraOrbit.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/ShotController.gd" id="2"]
@@ -35,6 +35,12 @@ albedo_color = Color(0.92, 0.92, 0.92)
 albedo_color = Color(0.9, 0.2, 0.2)
 
 [sub_resource type="StandardMaterial3D" id="10"]
+albedo_color = Color(0.7, 0.95, 1.0)
+
+[sub_resource type="StandardMaterial3D" id="11"]
+albedo_color = Color(0.95, 0.85, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="12"]
 transparency = 1
 albedo_color = Color(0.6, 0.9, 1.0, 0.35)
 
@@ -90,15 +96,15 @@ shape = SubResource("7")
 script = ExtResource("3")
 cue_ball_path = NodePath("../CueBall")
 
-[node name="CueLine" type="Line3D" parent="AimAssist"]
-width = 0.01
+[node name="CueLine" type="MeshInstance3D" parent="AimAssist"]
+material_override = SubResource("10")
 
-[node name="TargetLine" type="Line3D" parent="AimAssist"]
-width = 0.01
+[node name="TargetLine" type="MeshInstance3D" parent="AimAssist"]
+material_override = SubResource("11")
 
 [node name="GhostBall" type="MeshInstance3D" parent="AimAssist"]
 mesh = SubResource("6")
-material_override = SubResource("10")
+material_override = SubResource("12")
 
 [node name="ShotController" type="Node" parent="."]
 script = ExtResource("2")
