@@ -44,25 +44,18 @@ func _set_visible(show_lines: bool) -> void:
 	_ghost_ball.visible = show_lines
 
 func _find_target_ball(cue_pos: Vector3, aim_dir: Vector3) -> RigidBody3D:
-	var balls: Array = get_tree().get_nodes_in_group("balls")
-	var best_ball: RigidBody3D = null
-	var best_score: float = -1.0
-	var limit_cos: float = cos(deg_to_rad(aim_angle_limit_deg))
-	for ball in balls:
-		if ball == _cue_ball:
-			continue
-		var to_ball: Vector3 = (ball.global_transform.origin - cue_pos)
-		to_ball.y = 0.0
-		if to_ball.length() < 0.001:
-			continue
-		var dir: Vector3 = to_ball.normalized()
-		var dot: float = aim_dir.dot(dir)
-		if dot < limit_cos:
-			continue
-		if dot > best_score:
-			best_score = dot
-			best_ball = ball
-	return best_ball
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var origin := cue_pos + Vector3(0.0, ball_radius, 0.0)
+	var max_dist := max(table_width, table_length) * 2.0
+	var query := PhysicsRayQueryParameters3D.create(origin, origin + aim_dir * max_dist)
+	query.collide_with_areas = false
+	query.collide_with_bodies = true
+	query.collision_mask = 1
+	query.exclude = [_cue_ball.get_rid()]
+	var hit := space.intersect_ray(query)
+	if not hit:\n\t\treturn null
+	if hit.collider is RigidBody3D:\n\t\treturn hit.collider
+	return null
 
 func _find_best_pocket(target_pos: Vector3, aim_dir: Vector3) -> Vector3:
 	var best_pocket: Vector3 = _pockets[0]
