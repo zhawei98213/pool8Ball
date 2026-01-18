@@ -69,7 +69,7 @@ light_energy = 4.0
 
 
 [node name="CameraRig" type="Node3D" parent="."]
-position = Vector3(0, 0.2, 0)
+position = Vector3(0, 0.35, 0)
 script = ExtResource("1")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
