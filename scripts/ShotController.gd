@@ -17,6 +17,7 @@ var _selected_ball: RigidBody3D = null
 var _aiming := false
 var _aim_start := Vector2.ZERO
 var _last_aim_direction := Vector3.ZERO
+var _assist_enabled := true
 
 var _default_positions: Dictionary = {}
 
@@ -32,6 +33,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		_placement_mode = !_placement_mode
 		_release_selected_ball()
 		_update_aim_assist(false)
+	if event.is_action_pressed("toggle_assist"):
+		_assist_enabled = not _assist_enabled
+		_update_aim_assist(_assist_enabled and not _placement_mode)
 	if event.is_action_pressed("reset_balls"):
 		_reset_balls()
 
@@ -101,7 +105,7 @@ func _update_aim_from_screen(screen_pos: Vector2) -> void:
 
 func _update_aim_assist(active: bool) -> void:
 	if _aim_assist and _aim_assist.has_method("update_aim"):
-		_aim_assist.update_aim(_last_aim_direction, active)
+		_aim_assist.update_aim(_last_aim_direction, active and _assist_enabled)
 
 func _select_ball(screen_pos: Vector2) -> void:
 	var hit: Dictionary = _raycast_objects(screen_pos)

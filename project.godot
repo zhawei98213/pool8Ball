@@ -54,3 +54,11 @@ toggle_view={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"keycode":86,"pressed":true)]
 }
+toggle_help={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":72,"pressed":true)]
+}
+toggle_assist={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":71,"pressed":true)]
+}

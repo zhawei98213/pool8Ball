@@ -51,6 +51,9 @@ func _update_camera_transform() -> void:
 func get_camera() -> Camera3D:
 	return _camera
 
+func is_top_down() -> bool:
+\treturn _top_down
+
 func _toggle_view() -> void:
 	_top_down = !_top_down
 	if _top_down:
