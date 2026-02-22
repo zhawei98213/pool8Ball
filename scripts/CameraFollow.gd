@@ -1,9 +1,9 @@
 extends Node3D
 
 @export var cue_ball_path: NodePath
-@export var offset := Vector3(-0.9, 0.25, 0.0)
-@export var look_ahead := Vector3(1.0, 0.05, 0.0)
-@export var smoothing := 0.12
+@export var offset := Vector3(-1.6, 0.22, 0.0)
+@export var look_ahead := Vector3(0.7, 0.04, 0.0)
+@export var smoothing := 0.08
 
 @onready var _cue_ball: RigidBody3D = get_node(cue_ball_path)
 @onready var _camera: Camera3D = $Camera3D
