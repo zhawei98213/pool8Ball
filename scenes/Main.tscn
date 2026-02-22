@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://scripts/CameraFollow.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/ShotController.gd" id="2"]
@@ -84,6 +84,18 @@ height = 1.4
 
 [sub_resource type="StandardMaterial3D" id="22"]
 albedo_color = Color(0.55, 0.35, 0.2, 1.0)
+
+[sub_resource type="BoxMesh" id="23"]
+size = Vector3(0.05715, 0.004, 0.004)
+
+[sub_resource type="BoxMesh" id="24"]
+size = Vector3(1.4, 0.006, 0.006)
+
+[sub_resource type="StandardMaterial3D" id="25"]
+albedo_color = Color(1.0, 0.85, 0.2, 1.0)
+
+[sub_resource type="StandardMaterial3D" id="26"]
+albedo_color = Color(0.2, 0.85, 1.0, 1.0)
 
 [node name="Main" type="Node3D"]
 
@@ -188,6 +200,26 @@ material_override = SubResource("13")
 [node name="GhostBall" type="MeshInstance3D" parent="AimAssist"]
 mesh = SubResource("8")
 material_override = SubResource("14")
+
+[node name="ScaleHelpers" type="Node3D" parent="."]
+
+[node name="BallScale" type="MeshInstance3D" parent="ScaleHelpers"]
+position = Vector3(-1.1, 0.035, -0.45)
+mesh = SubResource("23")
+material_override = SubResource("25")
+
+[node name="CueScale" type="MeshInstance3D" parent="ScaleHelpers"]
+position = Vector3(-0.2, 0.035, -0.6)
+mesh = SubResource("24")
+material_override = SubResource("26")
+
+[node name="BallLabel" type="Label3D" parent="ScaleHelpers"]
+position = Vector3(-1.1, 0.08, -0.45)
+text = "Ball D 57.15mm"
+
+[node name="CueLabel" type="Label3D" parent="ScaleHelpers"]
+position = Vector3(-0.2, 0.08, -0.6)
+text = "Cue L 1.40m, D 9mm"
 
 [node name="CameraRig" type="Node3D" parent="."]
 script = ExtResource("1")
