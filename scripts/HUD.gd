@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_help"):
-		_visible = !_visible
+		_visible = not _visible
 		_label.visible = _visible
 		if _visible:
 			_update_text()
@@ -24,9 +24,9 @@ func _process(_delta: float) -> void:
 		_update_text()
 
 func _update_text() -> void:
-	var view_label := "Top"
-	if _camera_rig.has_method("is_top_down") and not _camera_rig.is_top_down():
-		view_label = "Low"
+	var view_label := "Low"
+	if _camera_rig.has_method("is_top_down"):
+		view_label = "Top" if _camera_rig.is_top_down() else "Low"
 	var assist_label := "On"
 	if _aim_assist.has_method("is_enabled") and not _aim_assist.is_enabled():
 		assist_label = "Off"
